@@ -56,15 +56,23 @@ class AlienInvasion:
             #user clicks game window's close button, call sys.exit() to exit game
             if event.type == pygame.QUIT:
                 sys.exit()
+
             elif event.type == pygame.KEYDOWN:
                 #a keydown event is anytime a key is pressed
                 if event.key == pygame.K_RIGHT:
                     self.ship.moving_right = True
                     #doesn't move ship directly yet, just makes true
-                elif event.type == pygame.KEYUP:
-                    if event.key == pygame.K_RIGHT:
-                        self.ship.moving_right = False
+                elif event.key == pygame.K_LEFT:
+                    self.ship.moving_left = True
+
+            elif event.type == pygame.KEYUP:
+                if event.key == pygame.K_RIGHT:
+                    self.ship.moving_right = False
+                elif event.key == pygame.K_LEFT:
+                    self.ship.moving_left = False 
         #using keyup and keydown together help make continuous motion
+        #can use elif blocks here because each event is connected to only one key
+        #if player presses both keys at once, two seaparate events will be detected
 
     def _update_screen(self):
         #redraw the screen during each pass through the loop
