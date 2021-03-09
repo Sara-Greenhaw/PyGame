@@ -25,7 +25,7 @@ class AlienInvasion:
        #when activate game animation loop, surface redraw every loop to be updated with any changes trigger by user input
        pygame.display.set_caption('Alien Invasion')
 
-       self.ship = Ship(self)
+       self.ship = Ship(self) #ship class's self info
        #instance of Ship after screen has been created
        #call to ship requires one argument, an instance of AlienInvasion
        #the self argument here refers to the current instance of AlienInvasion, this is the parameter that gives Ship access to the game's resources
@@ -53,6 +53,11 @@ class AlienInvasion:
             #user clicks game window's close button, call sys.exit() to exit game
             if event.type == pygame.QUIT:
                 sys.exit()
+            elif event.type == pygame.KEYDOWN:
+                #a keydown event is anytime a key is pressed
+                if event.key == pygame.K_RIGHT:
+                    #move ship to the right
+                    self.ship.rect.x +=1 
     def _update_screen(self):
         #redraw the screen during each pass through the loop
         #updates images on the screen, and flip to new screen
