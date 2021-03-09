@@ -21,6 +21,14 @@ class Ship:
         #position ship at bottom center of screen
         #make value of self.rect.midbottom match the midbottom attribute of screen's rect
 
+        self.moving_right = False #when false ship is motionless
+
+    def update(self):
+        #update the ship's position based on the movement flag
+        #called through an instance of Ship, so not considered a helper method
+        if self.moving_right:
+            self.rect.x += 1
+
     def blitme(self):
         #draw the ship at its curent loaction specified by self.rect
         self.screen.blit(self.image, self.rect)

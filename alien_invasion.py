@@ -38,6 +38,9 @@ class AlienInvasion:
             #event is an action that user performs while playing like clicking mouse/pressing key
 
             self._check_events() #to call a method from within a class, use dot notation with the variable self and the name of the method
+            self.ship.update() #calls the ship's update method on each pass through the loop
+            #ship's position will be updated after we've checked for keyboard events and before we update the screen
+            #allows ship's position to be updated in response to player input and ensures the updated position will be used when drawing ship to screen
             self._update_screen()
 
             #while loop runs continually --> contains event loop and code that manages screen updates
@@ -56,8 +59,13 @@ class AlienInvasion:
             elif event.type == pygame.KEYDOWN:
                 #a keydown event is anytime a key is pressed
                 if event.key == pygame.K_RIGHT:
-                    #move ship to the right
-                    self.ship.rect.x +=1 
+                    self.ship.moving_right = True
+                    #doesn't move ship directly yet, just makes true
+                elif event.type == pygame.KEYUP:
+                    if event.key == pygame.K_RIGHT:
+                        self.ship.moving_right = False
+        #using keyup and keydown together help make continuous motion
+
     def _update_screen(self):
         #redraw the screen during each pass through the loop
         #updates images on the screen, and flip to new screen
