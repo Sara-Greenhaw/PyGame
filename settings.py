@@ -8,5 +8,6 @@ class Settings:
         #initialize game's settings
         #screen settings
         self.screen_width = 1200
-        self.screen_height = 800
+        self.screen_height = 625
+        #800 to tall for my screen so made 625
         self.bg_color = (230, 230, 230)

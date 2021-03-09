@@ -21,9 +21,9 @@ class Ship:
         #position ship at bottom center of screen
         #make value of self.rect.midbottom match the midbottom attribute of screen's rect
 
-        def blitme(self):
-            #draw the ship at its curent loaction specified by self.rect
-            self.screen.blit(self.image, self.rect)
+    def blitme(self):
+        #draw the ship at its curent loaction specified by self.rect
+        self.screen.blit(self.image, self.rect)
 
 
 #pygame is efficient because lets treat all game elements like rectangles (rects)
