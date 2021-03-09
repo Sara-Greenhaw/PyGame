@@ -1,0 +1,12 @@
+#instead of adding settings throughout code, store all settings values in one place
+#work with one setting object any time need to access individ setting
+#easier to modify game appearance as project grows
+class Settings:
+    #a class to store all settings for alien invasion
+
+    def __init__(self):
+        #initialize game's settings
+        #screen settings
+        self.screen_width = 1200
+        self.screen_height = 800
+        self.bg_color = (230, 230, 230)
