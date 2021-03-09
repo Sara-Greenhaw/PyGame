@@ -36,25 +36,32 @@ class AlienInvasion:
             #while loop runs continually --> contains event loop and code that manages screen updates
             #watch for keyboard and mouse events
             #event is an action that user performs while playing like clicking mouse/pressing key
+
+            self._check_events() #to call a method from within a class, use dot notation with the variable self and the name of the method
+            self._update_screen()
+
+            #while loop runs continually --> contains event loop and code that manages screen updates
+            #watch for keyboard and mouse events
+            #event is an action that user performs while playing like clicking mouse/pressing key
             #our event loop listen for events and perform appropriate tasks
-            for event in pygame.event.get():
-                #event loop
-                #pygame.event.get() returns list of events taken place since last time function called
-                #any keyboard or mouse events causes for loop to run
-                #if statements to detect and repsond to specific events
-                #user clicks game window's close button, call sys.exit() to exit game
-                if event.type == pygame.QUIT:
-                    sys.exit()
-
-            #redraw the screen during each pass through the loop
-            self.screen.fill(self.settings.bg_color)
-
-            self.ship.blitme() #draw ship on screen, bottom center
-            
-
-            #make the most recently drawn screen visible 
-            #continually tells pygame to make most recently drawn screen visible, illusion of smooth movement
-            pygame.display.flip()
+    def _check_events(self):
+        for event in pygame.event.get():
+            #event loop
+            #pygame.event.get() returns list of events taken place since last time function called
+            #any keyboard or mouse events causes for loop to run
+            #if statements to detect and repsond to specific events
+            #user clicks game window's close button, call sys.exit() to exit game
+            if event.type == pygame.QUIT:
+                sys.exit()
+    def _update_screen(self):
+        #redraw the screen during each pass through the loop
+        #updates images on the screen, and flip to new screen
+        self.screen.fill(self.settings.bg_color)
+        self.ship.blitme() #draw ship on screen, bottom center
+    
+        #make the most recently drawn screen visible
+        #continually tells pygame to make most recently drawn screen visible, illusion of smooth movement
+        pygame.display.flip()
 
 if __name__ ==  '__main__':
     #make a game instance, and run the game
