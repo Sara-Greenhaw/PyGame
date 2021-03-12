@@ -28,3 +28,11 @@ each row needs some empty space below it, which we'll make equal to the height o
 to find the number of rows, we divide the available space by two times the height of an alien (space below alien and alien itself)
 use floor division because we can only make an integer number of rows
 number_rows = available_space_y // (2 * alien_height)
+
+
+we want to know right away when a bullet hits an alien so we can make an alien dissapear as soon as its hits
+look for collisions immediately after updating position of all the bullets
+
+the sprite.groupcollide() function compares the rect of each element in one group with the rects of each element in another group
+it compares each bullet's rect with each alien's rect and returns a dictionary containing the bullets and aliens that have collided
+each key in the icitonary will be a bullet, and the corresponding value will be the alien that was hit

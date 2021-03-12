@@ -147,7 +147,7 @@ class AlienInvasion:
         #respond appropriately if any aliens have reached an edge
         for alien in self.aliens.sprites():
             if alien.check_edges():
-                self._change_fleet_directions()
+                self._change_fleet_direction()
                 break
     
 
@@ -208,6 +208,20 @@ class AlienInvasion:
         for bullet in self.bullets.copy():
             if bullet.rect.bottom <= 0:
                 self.bullets.remove(bullet)
+
+        #check for any bullets that have hit aliens
+        #if has hit alien, get rid of the bullet and the alien
+        collisions = pygame.sprite.groupcollide(
+                self.bullets, self.aliens, True, True)
+
+        #new code compares positions of all bullets in self.bullets and all the aliens in self.aliens, and identifies any that overlap
+        #whenever the rects of a bullet and alien overlap, groupcollide() adds a key value pair to dictionary it returns
+        #the two arguments tell Pygame to delete the bullets and aliens that have collided
+        #if you wanted a high powered bullet that can travel to the top of the screen, destroying every alien in its path, you could
+        #set the fist Boolean argument to False and the second Boolean argument to True
+        #the aliens hit would disappear, but all bullets would stay active until they disappeared off the top of the screen
+        #whenever you run alien invasion now, aliens you hit should disappear
+        
 
     def _update_aliens(self):
         #check if fleet is at an edge, then update the position of all aliens in the fleet
