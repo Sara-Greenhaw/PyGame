@@ -21,4 +21,6 @@ class Settings:
         self.bullet_height = 15
         self.bullet_color = (60, 60, 60)
         #these setting create dark gray bullets with a width of 3 pixels and a height of 15 pixels, bullets will travel slightly slower than ship
-        
+        #limit the number of bullets a player can have on the screen at a time
+        #this limits the player to three bullets at a time
+        self.bullets_allowed = 3
