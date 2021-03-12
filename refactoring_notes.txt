@@ -1,8 +1,0 @@
-Refactor code written before adding more code
-Refactoring simplifies the structure of the code you've already written, making it easier to build on
-check_events() method and update_screen method are helper methods
-We break run_game() method which is getting lengthy, into two helper methods
-helper method does work inside a class but isn't meant to be called through an instance
-
-
-single leading underscore indicates a helper method

@@ -1,0 +1,20 @@
+Refactor code written before adding more code
+Refactoring simplifies the structure of the code you've already written, making it easier to build on
+check_events() method and update_screen method are helper methods
+We break run_game() method which is getting lengthy, into two helper methods
+helper method does work inside a class but isn't meant to be called through an instance
+
+
+single leading underscore indicates a helper method
+
+figure out how many elements fit in a row, need to look at how much horizontal space we have
+we need an emptpy margin on either side of the screen 
+we'll make this margin the width of one alien, but because we have two margins, the available space for aliens is the screen width
+minus two alien widths: available_space_x = settings.screen_width - (2 * alien_width) --> blank spaces on edges of horizontal screen, so aliens
+not right on borders
+
+we also need to set spacing between aliens; we'll make it one alien width. The space needed to display one alien is twice its width: one width for the alien and one width
+for the empty space to its right
+to find the number of aliens that fit across the screen, we divide the available space by two time the width of an alien
+we use floor division (//) which divides two numbers and drops any remainder, o that we'll get an integer number of aliens!
+number_aliens_x = available_space_x // (2*alien_width)

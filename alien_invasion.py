@@ -8,6 +8,7 @@ from settings import Settings
 from ship import Ship
 #import Ship
 from bullet import Bullet
+from alien import Alien
 
 class AlienInvasion:
     #Overall class to manage game assets and behavior
@@ -37,6 +38,9 @@ class AlienInvasion:
        self.bullets = pygame.sprite.Group() #an instance of the pygame.sprite.Group class, which behaves like a list with some extra functionality that is helpful
        #when writing games
        #use this group to draw bullets to the screen on each pass through the main loop and to update each bullet's position
+       self.aliens = pygame.sprite.Group() #group to hold the fleet of aliens
+
+       self._create_fleet()
 
     def run_game(self):
         #start the main loop for the game, controls game
@@ -84,6 +88,33 @@ class AlienInvasion:
         #using keyup and keydown together help make continuous motion
         #can use elif blocks here because each event is connected to only one key
         #if player presses both keys at once, two seaparate events will be detected
+    def _create_fleet(self):
+        #create the fleet of aliens
+        #create an alien and find the number of aliens in a row
+        #spacing between each alien is equal to one alien width
+        #make an alien
+        alien = Alien(self) #we need to know the alien's width and height to place aliens before calculations
+        alien_width = alien.rect.width
+        #available space is the space one alien widths off each side of the screen (margins), we have two margins (left and right side) so multiply by 2
+        available_space_x = self.settings.screen_width - (2 * alien_width)
+        #we just found how much space we have for ships horizontally, need to find number of ships max we can have across screen
+        #its one ship plus the length of a ship for space, so its 2 x alien_width
+        number_aliens_x = available_space_x // (2 * alien_width)
+
+        #create the first row of aliens
+        #counts from 0 to the number of aliens need to make
+        for alien_number in range(number_aliens_x):
+            #create an alien and place it in the row
+            alien = Alien(self) #create new alien
+            alien.x = alien_width + 2* alien_width * alien_number #set new alien's x coordinate value to place it in row
+            #alien number is 0,1,2,3...
+            #each alien is pushed to the right one alien width from the left margin
+            #multiply the alien width by 2 to account for space each alien takes up, including emtpy space to the right, multiple this amount by
+            #alien's position in the row
+            alien.rect.x = alien.x
+            self.aliens.add(alien) # add each new alien to group aliens
+        #creating one instance of ALien, then adding it to the group that will hold the fleet
+        #the alien will be place in default upper left area of screen initially
 
     def _check_keydown_events(self, event):
         #a keydown event is anytime a key is pressed
@@ -146,6 +177,11 @@ class AlienInvasion:
             bullet.draw_bullet()
         #make the most recently drawn screen visible
         #continually tells pygame to make most recently drawn screen visible, illusion of smooth movement
+        
+        #to make alien appear, need to call the group's draw() method
+        self.aliens.draw(self.screen)
+        #when call draw() on a group, pygame draws each element in the group at the position defined by its rect attribute
+        #draw method requires one argument - surface on which to draw the elements from the group
         pygame.display.flip()
 
 if __name__ ==  '__main__':
