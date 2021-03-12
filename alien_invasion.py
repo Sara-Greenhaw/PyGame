@@ -15,9 +15,12 @@ class AlienInvasion:
        pygame.init()
        self.settings = Settings()
        #creates instance of settings
-       
 
-       self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height)) 
+       self.screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN) #tells pygame to figure out a window size that will fill the screen
+       self.settings.screen_width = self.screen.get_rect().width
+       self.settings.screen_height = self. screen. get_rect().height 
+
+       #self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height)) 
        #creates a display window, 1200 by 800 pixels, assign to attribute self.screen
        #so available in all methods
        #object assigned to self.screen is a surface, part of screen where game element can be displayed (ex ship, alien are elements)
@@ -29,6 +32,10 @@ class AlienInvasion:
        #instance of Ship after screen has been created
        #call to ship requires one argument, an instance of AlienInvasion
        #the self argument here refers to the current instance of AlienInvasion, this is the parameter that gives Ship access to the game's resources
+
+       self.bullets = pygame.sprite.Group() #an instance of the pygame.sprite.Group class, which behaves like a list with some extra functionality that is helpful
+       #when writing games
+       #use this group to draw bullets to the screen on each pass through the main loop and to update each bullet's position
 
     def run_game(self):
         #start the main loop for the game, controls game
@@ -42,6 +49,8 @@ class AlienInvasion:
             #ship's position will be updated after we've checked for keyboard events and before we update the screen
             #allows ship's position to be updated in response to player input and ensures the updated position will be used when drawing ship to screen
             self._update_screen()
+            self.bullets.update() #when you call automaticcaly on a group (pygame.sprite.Group), the group auto calls update() for each sprite in the group
+            #the self.bullets.update() calls bullet.update() for each bullet we place in the group bullets
 
             #while loop runs continually --> contains event loop and code that manages screen updates
             #watch for keyboard and mouse events
