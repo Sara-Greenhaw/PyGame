@@ -105,14 +105,19 @@ class AlienInvasion:
         #counts from 0 to the number of aliens need to make
         for alien_number in range(number_aliens_x):
             #create an alien and place it in the row
-            alien = Alien(self) #create new alien
-            alien.x = alien_width + 2* alien_width * alien_number #set new alien's x coordinate value to place it in row
-            #alien number is 0,1,2,3...
-            #each alien is pushed to the right one alien width from the left margin
-            #multiply the alien width by 2 to account for space each alien takes up, including emtpy space to the right, multiple this amount by
-            #alien's position in the row
-            alien.rect.x = alien.x
-            self.aliens.add(alien) # add each new alien to group aliens
+            self._create_alien(alien_number)
+
+    def _create_alien(self, alien_number): #need alien number that currently being created
+        #create an alien and place in the row
+        alien = Alien(self) #create new alien
+        alien_width = alien.rect.width
+        alien.x = alien_width + 2* alien_width * alien_number #set new alien's x coordinate value to place it in row
+        #alien number is 0,1,2,3...
+        #each alien is pushed to the right one alien width from the left margin
+        #multiply the alien width by 2 to account for space each alien takes up, including emtpy space to the right, multiple this amount by
+        #alien's position in the row
+        alien.rect.x = alien.x
+        self.aliens.add(alien) # add each new alien to group aliens
         #creating one instance of ALien, then adding it to the group that will hold the fleet
         #the alien will be place in default upper left area of screen initially
 
