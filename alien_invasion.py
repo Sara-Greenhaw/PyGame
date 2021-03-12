@@ -1,10 +1,12 @@
 import sys
+from time import sleep #sleep() function from time module in python so we can pause game for a moment when the ship is hit
 import pygame
 #import sys & pygame modules --> pygame contains functionality needed to make game
 #use tools in sys module to exit game when player quits
 
 from settings import Settings
 #import settings into main program file
+from game_stats import GameStats
 from ship import Ship
 #import Ship
 from bullet import Bullet
@@ -29,6 +31,9 @@ class AlienInvasion:
        #display.set_mode represents entire game window
        #when activate game animation loop, surface redraw every loop to be updated with any changes trigger by user input
        pygame.display.set_caption('Alien Invasion')
+
+       #Create an instance to store game statistics
+       self.stats = GameStats(self)
 
        self.ship = Ship(self) #ship class's self info
        #instance of Ship after screen has been created
@@ -70,6 +75,27 @@ class AlienInvasion:
             #watch for keyboard and mouse events
             #event is an action that user performs while playing like clicking mouse/pressing key
             #our event loop listen for events and perform appropriate tasks
+
+    def _ship_hit(self):
+        #respond to the ship being hit by an alien
+        #decrement ships left
+        self.stats.ships_left -= -1 #each time ship hit, ship is gone so subtract one, tells us when player has run out of ships
+
+        #get rid of any remaining aliens and bullets because alien hit ship (lost a game)
+        self.aliens.empty()
+        self.bullets.empty()
+
+        #create a new fleet and center the ship
+        self._create_fleet()
+        self.ship.center_ship()
+
+        #pause
+        sleep(0.5)
+        #pause after updates have been made to all game elements but before any changes have been drawn to screen
+        #so player can see that the alien has hit the ship
+        #sleep pauses program execution for half a second
+        #when sleep() function ends, code execution moves on to the _update_screen() method, which draws the new fleet to the screen
+
     def _check_events(self):
         for event in pygame.event.get():
             #event loop
@@ -238,6 +264,20 @@ class AlienInvasion:
         #if alien group is empty, get rid of any existing bullets by using empty() method which removes all the remaining sprites of the group of bullets
         #also make create_fleet() which fills the screen with aliens again
 
+    def _check_aliens_bottoms(self):
+        #check if any aliens ahve reached the bottom of the screen
+        screen_rect = self.screen.get_rect()
+        for alien in self.aliens.sprites():
+            if alien.rect.bottom >= screen_rect.bottom:
+                #treat this the same as if the ship got hit
+                self._ship_hit()
+                break
+
+        #check whether any aliens have reached the bottom of the screen
+        #an alien reaches the bottom whit its rect.bottom value is greater than or equal to the screen's rect.bottom attribute
+        #if an alien touches the bottom, we call _ship_hit()
+        #if one alien touches the bottom theres no need to check the rest so break out of loop and call ship hit()
+
     def _update_aliens(self):
         #check if fleet is at an edge, then update the position of all aliens in the fleet
         #update the positions of all aliens in the fleet
@@ -250,10 +290,14 @@ class AlienInvasion:
         #loops through group aliens and returns the first alien it finds that has collided with the ship
         #if no collisions occur, spritecollidenay() returns None and the if block won't exeute
         #if  spritecollideany() finds an alien that has collided with the ship, it returns that alien and the if block executes
-        #it prints ship hit!! see extra notes for further explanation
+        #goes to _ship_hit() method
         if pygame.sprite.spritecollideany(self.ship, self.aliens):
-            print('Ship hit!!!')
+            self._ship_hit()
 
+        #look for aliens hitting the bottom of the screen
+        self._check_aliens_bottom()
+        #call check aliens bottom after updating the positions of all the aliens and after looking for alien and ship collisions
+        #now a new fleet will appear every time the ship is hit by an alien or an alien reaches the bottom of the screen
     def _update_screen(self):
         #redraw the screen during each pass through the loop
         #updates images on the screen, and flip to new screen

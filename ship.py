@@ -55,7 +55,10 @@ class Ship:
         #update rect object from self.x
         self.rect.x = self.x #only integer prtion of self.x will be stored in rect, but that's fine for displaying the ship
     
-
+    def center_ship(self):
+        #center the ship ont he screen
+        self.rect.midbottom = self.screen_rect.midbottom
+        self.x = float(self.rect.x) #allows us to track ship's specific position
 
     def blitme(self):
         #draw the ship at its curent loaction specified by self.rect
