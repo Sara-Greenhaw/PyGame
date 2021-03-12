@@ -244,6 +244,16 @@ class AlienInvasion:
         self._check_fleet_edges() #check edges before updating alien's position
         self.aliens.update() #use the update method on the aliens group, which calls each alien's update() method, making fleet move right
 
+        #the spritecollideny() function takes two arguments - a sprite and a group
+        #looks for any member of the group that has collided with the sprite and stops looking through the group as soon as it finds one memeber
+        #that has collided with the sprite
+        #loops through group aliens and returns the first alien it finds that has collided with the ship
+        #if no collisions occur, spritecollidenay() returns None and the if block won't exeute
+        #if  spritecollideany() finds an alien that has collided with the ship, it returns that alien and the if block executes
+        #it prints ship hit!! see extra notes for further explanation
+        if pygame.sprite.spritecollideany(self.ship, self.aliens):
+            print('Ship hit!!!')
+
     def _update_screen(self):
         #redraw the screen during each pass through the loop
         #updates images on the screen, and flip to new screen
