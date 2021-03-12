@@ -138,6 +138,31 @@ class AlienInvasion:
         self.aliens.add(alien) # add each new alien to group aliens
         #creating one instance of ALien, then adding it to the group that will hold the fleet
         #the alien will be place in default upper left area of screen initially
+    
+
+    #check fleet edges loop through fleet and call check_edges in alien class on each alien
+    #if check edges in alien class reutrns true, we know an alien is at an edge and the whole fleet needs to change direction, so we call change
+    #fleet direction and break out of the loop
+    def _check_fleet_edges(self):
+        #respond appropriately if any aliens have reached an edge
+        for alien in self.aliens.sprites():
+            if alien.check_edges():
+                self._change_fleet_directions()
+                break
+    
+
+    #in change fleet direction, we loop through all the aliens and drop each one using the setting fleet_drop_speed (drops at that speed)
+    #then we change the value of fleet direction by multipling its current value by -1
+    
+    def _change_fleet_direction(self):
+        #drop entire fleet and change the fleet's dirction
+        #the line that changes the fleet's direction isn't part of the for loop
+        #we want to change each alien's vertical position, but we only want to change the direction of the fleet once
+        for alien in self.aliens.sprites():
+            alien.rect.y += self.settings.fleet_drop_speed
+
+        self.settings.fleet_direction *= -1
+        #changing direction of fleet in settings
 
     def _check_keydown_events(self, event):
         #a keydown event is anytime a key is pressed
@@ -185,7 +210,9 @@ class AlienInvasion:
                 self.bullets.remove(bullet)
 
     def _update_aliens(self):
+        #check if fleet is at an edge, then update the position of all aliens in the fleet
         #update the positions of all aliens in the fleet
+        self._check_fleet_edges() #check edges before updating alien's position
         self.aliens.update() #use the update method on the aliens group, which calls each alien's update() method, making fleet move right
 
     def _update_screen(self):
