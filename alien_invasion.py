@@ -54,6 +54,8 @@ class AlienInvasion:
             #ship's position will be updated after we've checked for keyboard events and before we update the screen
             self._update_bullets()
             #allows ship's position to be updated in response to player input and ensures the updated position will be used when drawing ship to screen
+
+            self._update_aliens() #update position of each alien, after bullets have be updated because checking to see whether any bullets hit any aliens
             self._update_screen()
             
             
@@ -166,7 +168,6 @@ class AlienInvasion:
         #the add method is similar to append(), but its a method that's written just for pygame groups
     
     def _update_bullets(self):
-
         self.bullets.update()
         #when you call automaticcaly on a group (pygame.sprite.Group), the group auto calls update() for each sprite in the group
         #the self.bullets.update() calls bullet.update() for each bullet we place in the group bullets
@@ -183,7 +184,9 @@ class AlienInvasion:
             if bullet.rect.bottom <= 0:
                 self.bullets.remove(bullet)
 
-        
+    def _update_aliens(self):
+        #update the positions of all aliens in the fleet
+        self.aliens.update() #use the update method on the aliens group, which calls each alien's update() method, making fleet move right
 
     def _update_screen(self):
         #redraw the screen during each pass through the loop
