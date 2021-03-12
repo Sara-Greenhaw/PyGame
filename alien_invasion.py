@@ -94,29 +94,45 @@ class AlienInvasion:
         #spacing between each alien is equal to one alien width
         #make an alien
         alien = Alien(self) #we need to know the alien's width and height to place aliens before calculations
-        alien_width = alien.rect.width
+        alien_width, alien_height = alien.rect.size #returns tuple with width and height of a rect object
+
         #available space is the space one alien widths off each side of the screen (margins), we have two margins (left and right side) so multiply by 2
         available_space_x = self.settings.screen_width - (2 * alien_width)
         #we just found how much space we have for ships horizontally, need to find number of ships max we can have across screen
         #its one ship plus the length of a ship for space, so its 2 x alien_width
         number_aliens_x = available_space_x // (2 * alien_width)
 
-        #create the first row of aliens
-        #counts from 0 to the number of aliens need to make
-        for alien_number in range(number_aliens_x):
-            #create an alien and place it in the row
-            self._create_alien(alien_number)
+        #determine the number of rows of aliens that fit on the screen
+        ship_height = self.ship.rect.height
+        available_space_y = (self.settings.screen_height - 
+                                (3 * alien_height) - ship_height) #two aliens from bottom and ship from bottom, an alien from top
+                                #wrapped in parenthesis so outcome can be split over two lines, which results in 79 characters or less as recommended
+        number_rows = available_space_y // (2 * alien_height) #available space divided by 2 aliens height for alien and area around ship (an alien equivalent)
 
-    def _create_alien(self, alien_number): #need alien number that currently being created
+        #create the full fleet of aliens
+        for row_number in range(number_rows):
+            #create each row of aliens
+            #outer loop count from 0 to the number of rows we can make (see above)
+            for alien_number in range(number_aliens_x):
+                #inner loop creates aliens in one row, max number aliens we can make in a row
+                #create an alien and place it in the row
+                #counts from 0 to the number of aliens need to make
+                self._create_alien(alien_number, row_number)
+
+    def _create_alien(self, alien_number, row_number): #need alien number that currently being created
         #create an alien and place in the row
         alien = Alien(self) #create new alien
-        alien_width = alien.rect.width
-        alien.x = alien_width + 2* alien_width * alien_number #set new alien's x coordinate value to place it in row
+        alien_width, alien_height = alien.rect.size #returns tuple with width and height of rect object
+        alien.x = alien_width + 2 * alien_width * alien_number #set new alien's x coordinate value to place it in row
         #alien number is 0,1,2,3...
         #each alien is pushed to the right one alien width from the left margin
         #multiply the alien width by 2 to account for space each alien takes up, including emtpy space to the right, multiple this amount by
         #alien's position in the row
         alien.rect.x = alien.x
+        #change an alien's y coordinate value when its not in the first row by starting with one alien's height to create empty space at top of screen --> if first row then its just the same
+        #each row starts two alien heights below the previous row, so multiply alien height by two and then by the row number
+        #first row is row number 0, so vertical placement of first row is unchanged
+        alien.rect.y = alien.rect.height + 2 * alien.rect.height * row_number
         self.aliens.add(alien) # add each new alien to group aliens
         #creating one instance of ALien, then adding it to the group that will hold the fleet
         #the alien will be place in default upper left area of screen initially

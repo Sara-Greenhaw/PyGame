@@ -18,3 +18,13 @@ for the empty space to its right
 to find the number of aliens that fit across the screen, we divide the available space by two time the width of an alien
 we use floor division (//) which divides two numbers and drops any remainder, o that we'll get an integer number of aliens!
 number_aliens_x = available_space_x // (2*alien_width)
+
+to finish fleet, we determine number of rows that fit on the screen then repeat the loop for creating the aliens in one row until we have the correct number of rows
+to determine number of rows, we find the available vertical space by subtracting the alien height form the top, the ship height from the bottom,
+and two alien heights from the bottom of the screen-->
+available_space_y = settings.screen_height - (3 * alien_height) - ship height
+result will be some empty space above the ship, so play has some time to start shooting aliens at the beginning of each level
+each row needs some empty space below it, which we'll make equal to the height of one alien
+to find the number of rows, we divide the available space by two times the height of an alien (space below alien and alien itself)
+use floor division because we can only make an integer number of rows
+number_rows = available_space_y // (2 * alien_height)
