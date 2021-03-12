@@ -26,3 +26,8 @@ class Settings:
         self.bullets_allowed = 3
         #alien settings
         self.alien_speed = 1.0
+        self.fleet_drop_speed = 10 #controls how quickly the fleet drops down the screen each time an alien reaches either edge
+        #helpful to separate drop speed from horizontal speed so you can adjust the two speed independently
+
+        #fleet_direction of 1 represents right (adding to x value); -1 represents left (subtracting from x value)
+        self.fleet_direction = 1
