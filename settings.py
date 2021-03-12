@@ -14,3 +14,11 @@ class Settings:
 
         #ship setings --> making faster. Originally moving 1 pixel per cycle, now 1.5 pixels per cycle
         self.ship_speed = 1.5
+
+        #bullet settings
+        self.bullet_speed = 1.0
+        self.bullet_width = 3
+        self.bullet_height = 15
+        self.bullet_color = (60, 60, 60)
+        #these setting create dark gray bullets with a width of 3 pixels and a height of 15 pixels, bullets will travel slightly slower than ship
+        

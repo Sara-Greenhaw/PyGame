@@ -7,6 +7,7 @@ from settings import Settings
 #import settings into main program file
 from ship import Ship
 #import Ship
+from bullet import Bullet
 
 class AlienInvasion:
     #Overall class to manage game assets and behavior
@@ -86,6 +87,8 @@ class AlienInvasion:
             self.ship.moving_left = True
         elif event.key == pygame.K_q:
             sys.exit()
+        elif event.key == pygame.K_SPACE:
+            self._fire_bullet()
 
     def _check_keyup_events(self, event):
         #respond to key release
@@ -93,6 +96,14 @@ class AlienInvasion:
             self.ship.moving_right = False
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = False 
+
+        #nothing happens when spacebar is released with firing bullets
+
+    def _fire_bullet(self):
+        #create a new bullet adn add it to the bullets group
+        new_bullet = Bullet(self) #instance of bullet and call it new_bullet --> just like we did at top with settings!
+        self.bullets.add(new_bullet) #we add it to the new group bullets using the add() method
+        #the add method is similar to append(), but its a method that's written just for pygame groups
         
 
     def _update_screen(self):
@@ -100,7 +111,12 @@ class AlienInvasion:
         #updates images on the screen, and flip to new screen
         self.screen.fill(self.settings.bg_color)
         self.ship.blitme() #draw ship on screen, bottom center
-    
+
+        #make sure each bullet drawn to screen before flip
+        #bullets.sprites() method returns a list of all sprite in the group bullets
+        #to draw all fired bullets to the screen, we loop through the sprites in bullets and call draw_bullet on each one
+        for bullet in self.bullets.sprites():
+            bullet.draw_bullet()
         #make the most recently drawn screen visible
         #continually tells pygame to make most recently drawn screen visible, illusion of smooth movement
         pygame.display.flip()

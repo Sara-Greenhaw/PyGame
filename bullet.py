@@ -20,7 +20,7 @@ class Bullet(Sprite):
         #pygame.Rect() calss requires the x and y coordinates of the top-left corner of the rect, and the width and height of the rect
         #initialize rect at (0,0) but we'll move it to the correct location next line
         #we get width and height of the bullet form the values stored in self.settings
-        self.rect = pygame.Rect(0, 0, self.settings.bullet_width, self.setting.bullet_height)
+        self.rect = pygame.Rect(0, 0, self.settings.bullet_width, self.settings.bullet_height)
 
         self.rect.midtop = ai_game.ship.rect.midtop #bullet's midtop attribute to match the ship's midtop attribute
         #makes bullet emerge from the top of the ship, making it look like the bullet is fired from the ship
