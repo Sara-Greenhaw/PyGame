@@ -43,3 +43,6 @@ to test particular features, you can change certain game settings to focus on a 
 ex --> shrink screen so fewer aliens or increase bullet speed and give yourself lots of bullets at once
 
 favorite testing for alien invasion is use really wide bullets that remain active even after theyve hit an alien 
+
+when an alien hits the ship, we'll need to do a number of tasks: delete all remiaining aliens and bullets, recenter the ship, and create a new fleet
+Writing a print() call is an easy way to ensure we're detecting these conditinons properly
