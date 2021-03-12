@@ -53,6 +53,21 @@ class AlienInvasion:
             self.bullets.update() #when you call automaticcaly on a group (pygame.sprite.Group), the group auto calls update() for each sprite in the group
             #the self.bullets.update() calls bullet.update() for each bullet we place in the group bullets
 
+            #want to get rid of old bullets because contiue to exist and consume memory and processing power, remove bullet to prevent game from slowing down
+            #need to detect when the bottom value of a bullet's rect hasa  value of 0, which indicates the bullet has passed off the top of the screen
+            #because you use a for loop with a list (sprite group in pygame), python expects that the list will stay the saem length as long
+            #as the loop is running 
+            #we can't remove items from a list or group within a for loop, we have to loop over a copy of the group
+            #copy in for loop enables us to modify bullets inside the loop --> can't modify group or list in for loop, but can modify copy
+            #we check each bullet to see whether it has disappeared off the top of the screen in the if statement, if it has we remove bullet
+            for bullet in self.bullets.copy():
+                if bullet.rect.bottom <= 0:
+                    self.bullets.remove(bullet)
+            #print(len(self.bullets)) #shows how many bullets currently exist in the game and verify that they're being deleted when reach top of screen
+            #can wathc the terminal output while firing bullets and see that the number of bullets decreases to zero after each series of bullets
+            #has cleared the top of the screen
+            #take out print once verify good because will slow down the game
+        
             #while loop runs continually --> contains event loop and code that manages screen updates
             #watch for keyboard and mouse events
             #event is an action that user performs while playing like clicking mouse/pressing key
@@ -101,9 +116,11 @@ class AlienInvasion:
 
     def _fire_bullet(self):
         #create a new bullet adn add it to the bullets group
-        new_bullet = Bullet(self) #instance of bullet and call it new_bullet --> just like we did at top with settings!
-        self.bullets.add(new_bullet) #we add it to the new group bullets using the add() method
+        if len (self.bullets) < self.settings.bullets_allowed:
+            new_bullet = Bullet(self) #instance of bullet and call it new_bullet --> just like we did at top with settings!
+            self.bullets.add(new_bullet) #we add it to the new group bullets using the add() method
         #the add method is similar to append(), but its a method that's written just for pygame groups
+    
         
 
     def _update_screen(self):
