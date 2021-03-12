@@ -26,10 +26,24 @@ class Alien(Sprite):
     #the alien class doesn't need a method for drawing it to the screen - instead we will use a pygame method that automatically draws
     #all the elemnts of a group to the screen
 
+    def check_edges(self):
+        #return true if alien is at edge of screen
+        screen_rect = self.screen.get_rect()
+        #check_edges() on any alien to see  whether its at the left or right edge
+        #the alien is at right edge if right attribute of its rect is greater than or equal to the right attribute
+        #alien at left edge if its value is less than or equal to 0
+        if self.rect.right >= screen_rect.right or self.rect.left <=0:
+            return True
+
     def update(self):
-        #move alien to the right
-        self.x += self.settings.alien_speed #each time we update an alien's position, we move it to the right by the amount stored in alien_speed
+        #move alien to the right or left
+        self.x += (self.settings.alien_speed *
+                        self.settings.fleet_direction) #each time we update an alien's position, we move it to the right by the amount stored in alien_speed
         #track alien's exact position with the self.x attribute, which can hold decimal value
+        #if fleet_direction is 1, the value of alien_speed will be added to the alien's current position, moving the alien to the right;
+        #if fleet_direction is -1, the value will be substracted from the alien's position, moving the alien to the left
         self.rect.x = self.x #update the position of the alien's rect
+
+    
 
 
