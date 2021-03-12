@@ -10,8 +10,11 @@ class Ship:
         #gives Ship access to all game resources defined in AlienInvasion
         #intialize the ship and set its starting position
         self.screen = ai_game.screen #assign screen to attribute of ship to access easily in all methods of Ship class
+        #this screen is same as alien_invasion screen
         self.screen_rect = ai_game.screen.get_rect() #access the screen's rect attribute, allows us to place ship in correct location on screen
+        #get rid of rect because rect only takes integer values
 
+        self.settings = ai_game.settings #goes into alien_invasion class, which using settings clase 
         #load the ship image and get its rect
         self.image = pygame.image.load('images/ship.bmp') #returns surfae representing the ship, which we assign to self.image
         self.rect = self.image.get_rect() #access the ship's surface rect attribute so we can later use it to place ship
@@ -21,18 +24,30 @@ class Ship:
         #position ship at bottom center of screen
         #make value of self.rect.midbottom match the midbottom attribute of screen's rect
 
+        #store a decimal value for the ship's horizontal position
+        #because we can use decimal value to set attribute of rect, but rect only keep integer portion. Need to assign a variable to position
+        #keep track of ship's position accurately, define a new self.x attribute that can hold decimal values, use float function to convert
+        #value of self.rect.x to a decimal and assign this value to self.x
+        self.x = float(self.rect.x)
+
         self.moving_right = False #when false ship is motionless
         self.moving_left = False
 
     def update(self):
         #update the ship's position based on the movement flag
+        #update the ship's x value, not the rect
         #called through an instance of Ship, so not considered a helper method
+        
         if self.moving_right:
-            self.rect.x += 1
+            self.x += self.settings.ship_speed #now moves 1.5 pixels each cycle as specified in settings class, keeps track exactly how ship moves
         if self.moving_left:
-            self.rect.x -= 1
+            self.x -= self.settings.ship_speed
     #use two separate blocks rather than an elif to allow ship's rect.x value to be increased and then decreased when both arrow keys held down -->result is stand still
     #if had used elif for motion to the left, the right arrow key would always have priority
+
+        #update rect object from self.x
+        self.rect.x = self.x #only integer prtion of self.x will be stored in rect, but that's fine for displaying the ship
+    
 
 
     def blitme(self):

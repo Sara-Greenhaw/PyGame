@@ -11,3 +11,6 @@ class Settings:
         self.screen_height = 625
         #800 to tall for my screen so made 625
         self.bg_color = (230, 230, 230)
+
+        #ship setings --> making faster. Originally moving 1 pixel per cycle, now 1.5 pixels per cycle
+        self.ship_speed = 1.5
