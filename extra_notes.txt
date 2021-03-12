@@ -36,3 +36,10 @@ look for collisions immediately after updating position of all the bullets
 the sprite.groupcollide() function compares the rect of each element in one group with the rects of each element in another group
 it compares each bullet's rect with each alien's rect and returns a dictionary containing the bullets and aliens that have collided
 each key in the icitonary will be a bullet, and the corresponding value will be the alien that was hit
+
+You can test many features of the game simply by running the game but some features are tedius to test in the normal version of the game
+it's a lot of work to shoot down every alien on the screen multiple times to test whether your code responds to an empty fleet correctly
+to test particular features, you can change certain game settings to focus on a paritcular alrea 
+ex --> shrink screen so fewer aliens or increase bullet speed and give yourself lots of bullets at once
+
+favorite testing for alien invasion is use really wide bullets that remain active even after theyve hit an alien 

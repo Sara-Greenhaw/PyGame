@@ -221,6 +221,16 @@ class AlienInvasion:
         #set the fist Boolean argument to False and the second Boolean argument to True
         #the aliens hit would disappear, but all bullets would stay active until they disappeared off the top of the screen
         #whenever you run alien invasion now, aliens you hit should disappear
+
+        #check whether the aliens group is empty
+        #if returns false and alien group still has aliens, doesn't run through loop
+        if not self.aliens:
+            #destroy bullets and create new fleet
+            self.bullets.empty()
+            self._create_fleet()
+      
+        #if alien group is empty, get rid of any existing bullets by using empty() method which removes all the remaining sprites of the group of bullets
+        #also make create_fleet() which fills the screen with aliens again
         
 
     def _update_aliens(self):
