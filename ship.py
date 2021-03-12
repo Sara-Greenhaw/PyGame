@@ -38,9 +38,16 @@ class Ship:
         #update the ship's x value, not the rect
         #called through an instance of Ship, so not considered a helper method
         
-        if self.moving_right:
+        #update ship's position based on movement flags
+        #update the ship's x value, not the rect
+        #check position of ship before changing value of self.x
+        #self.rect.right returns the x-coordinate of the right edge of the ship's rect. If value is less than value returned by self.screen_rect.right,
+        #then the ship hasn't reach edge of of screen
+        #if value of left side of rect is greater than zero, the ship hasn't reach the left edge of the screen
+        #ensures ship is within bounds before adjusting value of self.x
+        if self.moving_right and self.rect.right < self.screen_rect.right:
             self.x += self.settings.ship_speed #now moves 1.5 pixels each cycle as specified in settings class, keeps track exactly how ship moves
-        if self.moving_left:
+        if self.moving_left and self.rect.left > 0:
             self.x -= self.settings.ship_speed
     #use two separate blocks rather than an elif to allow ship's rect.x value to be increased and then decreased when both arrow keys held down -->result is stand still
     #if had used elif for motion to the left, the right arrow key would always have priority
