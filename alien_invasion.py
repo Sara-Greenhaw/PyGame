@@ -7,6 +7,7 @@ import pygame
 from settings import Settings
 #import settings into main program file
 from game_stats import GameStats
+from button import Button
 from ship import Ship
 #import Ship
 from bullet import Bullet
@@ -46,6 +47,11 @@ class AlienInvasion:
        self.aliens = pygame.sprite.Group() #group to hold the fleet of aliens
 
        self._create_fleet()
+
+       #we only need one Play button, so create button in __init__() method
+       self.play_button = Button(self, "Play")
+       #creates an instance of Button with the label Play, but it doesn't draw the button to the screen
+       #we call button's draw_button() method to draw button to screen
 
     def run_game(self):
         #start the main loop for the game, controls game
@@ -97,7 +103,7 @@ class AlienInvasion:
             #when sleep() function ends, code execution moves on to the _update_screen() method, which draws the new fleet to the screen
         else:
             self.stats.game_active = False #if player has no ships left, set game_active to False
-
+    
     def _check_events(self):
         for event in pygame.event.get():
             #event loop
@@ -108,16 +114,30 @@ class AlienInvasion:
             if event.type == pygame.QUIT:
                 sys.exit()
             
+            #pygame detects mouse button down event when player clicks anywhere on the screen
+            #want to restrict our game to repsond to mouse click only on play button
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos() #returns a tuple containing the mouse cursor's x and y coordinates when mouse button is clicked
+                #we send these values to the new method _check_play_button
+                self._check_play_button(mouse_pos)
+            
             elif event.type == pygame.KEYUP:
                 self._check_keyup_events(event)
 
             elif event.type == pygame.KEYDOWN:
                 self._check_keydown_events(event)
-            
-            
+
         #using keyup and keydown together help make continuous motion
         #can use elif blocks here because each event is connected to only one key
         #if player presses both keys at once, two seaparate events will be detected
+
+    def _check_play_button(self, mouse_pos):
+        #start a new game when the player clicks Play
+        #collidepoint checks whether point of mouse click overlaps the region defined by Play button's rect
+        #if overlaps, set game_active to True and game begins!
+        if self.play_button.rect.collidepoint(mouse_pos):
+            self.stats.game_active = True
+
     def _create_fleet(self):
         #create the fleet of aliens
         #create an alien and find the number of aliens in a row
@@ -318,6 +338,14 @@ class AlienInvasion:
         self.aliens.draw(self.screen)
         #when call draw() on a group, pygame draws each element in the group at the position defined by its rect attribute
         #draw method requires one argument - surface on which to draw the elements from the group
+
+        #Draw the play button if the game is inactive
+        if not self.stats.game_active:
+            self.play_button.draw_button()
+        #to make the Play button visible above all other elements on screen, we draw it after all the other elements have been drawn
+        #but before flipping to a new screen
+        #we include an if block so button only appears when the game is inactive
+
         pygame.display.flip()
 
 if __name__ ==  '__main__':
