@@ -103,6 +103,7 @@ class AlienInvasion:
             #when sleep() function ends, code execution moves on to the _update_screen() method, which draws the new fleet to the screen
         else:
             self.stats.game_active = False #if player has no ships left, set game_active to False
+            pygame.mouse.set_visible(True) #make cursor visible again as soon as the game becomes inactive, which happens in _ship_hit()
     
     def _check_events(self):
         for event in pygame.event.get():
@@ -133,10 +134,26 @@ class AlienInvasion:
 
     def _check_play_button(self, mouse_pos):
         #start a new game when the player clicks Play
-        #collidepoint checks whether point of mouse click overlaps the region defined by Play button's rect
+        #collidepoint checks whether point of mouse click overlaps the region defined by Play button's rect, and game is not active new game begins
         #if overlaps, set game_active to True and game begins!
-        if self.play_button.rect.collidepoint(mouse_pos):
-            self.stats.game_active = True
+        button_clicked = self.play_button.rect.collidepoint(mouse_pos) #stores a true or false value
+        if button_clicked and not self.stats.game_active:
+            #game only restarts if play is clicked and the game is not currently active
+            #reset the game settings
+            self.settings.initialize_dynamic_settings()
+            self.stats.reset_stats() #restarts ship limit at 3, reset game stats
+            self.stats.game_active = True #game begins as soon as the code in this function finishes running
+
+            #get rid of any remaining aliens and bullets
+            self.aliens.empty()
+            self.bullets.empty()
+
+            #create a new fleet and center the ship
+            self._create_fleet()
+            self.ship.center_ship()
+
+            #hide the mouse cursor when game is active
+            pygame.mouse.set_visible(False) #passing False to set visible() tells pygame to hide cursor when mouse is over the game window
 
     def _create_fleet(self):
         #create the fleet of aliens
@@ -278,10 +295,12 @@ class AlienInvasion:
 
         #check whether the aliens group is empty
         #if returns false and alien group still has aliens, doesn't run through loop
+        #if there are no aliens and returns true, runs through loop
         if not self.aliens:
             #destroy bullets and create new fleet
             self.bullets.empty()
             self._create_fleet()
+            self.settings.increase_speed()
       
         #if alien group is empty, get rid of any existing bullets by using empty() method which removes all the remaining sprites of the group of bullets
         #also make create_fleet() which fills the screen with aliens again
