@@ -1,4 +1,7 @@
 import pygame.font
+from pygame.sprite import Group
+
+from ship import Ship #making group of ships so import Group and Ship classes
 #because scoreboard writes text to the screen, we begin by importing the pygame.font module
 
 class Scoreboard:
@@ -8,6 +11,7 @@ class Scoreboard:
         #give __init__() the ai_game parameter so it can access the settings, screen, and stats object which it will need to 
         #report the value we're tracking
         #initalize scorekeeping attributes
+        self.ai_game = ai_game
         self.screen = ai_game.screen
         self.screen_rect = self.screen.get_rect()
         self.settings = ai_game.settings
@@ -22,6 +26,7 @@ class Scoreboard:
         self.prep_score()
         self.prep_high_score()
         self.prep_level()
+        self.prep_ships()
 
     def prep_score(self):
         #turn the score into a rendered image
@@ -45,6 +50,7 @@ class Scoreboard:
         self.screen.blit(self.score_image, self.score_rect) #draws the score image onscreen at the location score_rect specifies --> top right
         self.screen.blit(self.high_score_image, self.high_score_rect) #draws high score top center of screen
         self.screen.blit(self.level_image, self.level_rect) #draws level image to screen
+        self.ships.draw(self.screen) #display the ships on screen, and pygame draws each ship
 
 
     def prep_high_score(self):
@@ -76,4 +82,18 @@ class Scoreboard:
         self.level_rect.right = self.score_rect.right #set image of level's right attribute to match the score's right attribute
         self.level_rect.top = self.score_rect.bottom + 10 #sets the top attribute of image level 10 pixels beneath the bottom of the score image
         #to leave space between the score and the level
+
+    def prep_ships(self):
+        #show how many ships are left
+        self.ships = Group() #creates an empty group, self.ships, to hold the ship instances
+        #to fill the self.ships group, a loop runs once for every ship the player has left
+        for ship_number in range(self.stats.ships_left):
+            #inside loop, we create a new ship and set each ship's x coord value so the ships appear next to each other w a 10 pixel margin
+            #on left side of the group of ships
+            #we set y coord value 10 pixels down from the top of the screen so the ships appear in the upper-left corner of the screen
+            #then we add each new ship to the group of ships
+            ship = Ship(self.ai_game)
+            ship.rect.x = 10 + ship_number * ship.rect.width
+            ship.rect.y = 10
+            self.ships.add(ship)
     

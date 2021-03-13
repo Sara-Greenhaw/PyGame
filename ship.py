@@ -1,14 +1,16 @@
 #to use our ship, have ship module that will contain the class Ship
 #Ship class will manage most of the behavior of player's ship
 import pygame
+from pygame.sprite import Sprite
 
-class Ship:
+class Ship(Sprite):
     #a class to manage the ship
 
     def __init__(self, ai_game):
         #self reference and reference to current instance of AlienInvasion class
         #gives Ship access to all game resources defined in AlienInvasion
         #intialize the ship and set its starting position
+        super().__init__()
         self.screen = ai_game.screen #assign screen to attribute of ship to access easily in all methods of Ship class
         #this screen is same as alien_invasion screen
         self.screen_rect = ai_game.screen.get_rect() #access the screen's rect attribute, allows us to place ship in correct location on screen

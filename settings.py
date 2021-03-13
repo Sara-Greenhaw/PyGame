@@ -13,7 +13,7 @@ class Settings:
         self.bg_color = (230, 230, 230)
 
         #ship setings 
-        self.ship_limit  = 2 #the number of ships the player starts out with
+        self.ship_limit  = 3 #the number of ships the player starts out with
         #assigning 3 made 4 ships
 
         #bullet settings
