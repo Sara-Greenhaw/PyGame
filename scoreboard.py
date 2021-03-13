@@ -23,7 +23,10 @@ class Scoreboard:
 
     def prep_score(self):
         #turn the score into a rendered image
-        score_str = str(self.stats.score) #turn numerical value stats.score into a string
+        #the round() function normally rounds a decimal number to a set number of decimal places given as second argument
+        #when you pass a negative number as the second argument, round() will round the value ot the nearest 10,100,1000, and so on
+        rounded_score = round(self.stats.score, -1) #tells python to round the value of stats.score ot the nearest 10 and store it in rounded_score
+        score_str = "{:,}".format(rounded_score) #tells python to insert commas into numbers when converting a numerical value into string (1,000,000 instead of 1000000)
         self.score_image = self.font.render(score_str, True,
                 self.text_color, self.settings.bg_color)
                 #render creates an image
