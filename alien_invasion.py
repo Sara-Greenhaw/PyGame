@@ -291,8 +291,12 @@ class AlienInvasion:
 
         #when bullet hits an alien, pygame returns a collisions dictionary
         #checks if collisions dictionary exists (), and if it does alien's value is added to the score
+        #if collisisons dictionary exists, we loop through all values in the dictionary
+        #each value is a list of aliens hit by a single bullet
+        #we multiply the value of each alien by the number of aliens in each list and add this amount to the current score
         if collisions:
-            self.stats.score += self.settings.alien_points
+            for aliens in collisions.values():
+                self.stats.score += self.settings.alien_points * len(aliens)
             self.sb.prep_score() #create new image for the updated score
 
         #new code compares positions of all bullets in self.bullets and all the aliens in self.aliens, and identifies any that overlap
