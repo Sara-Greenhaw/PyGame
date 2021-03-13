@@ -11,9 +11,13 @@ class GameStats:
         self.game_active = False #flag as attribute to GameStats to end the game when player runs out of ships
         #you will have to make true for game to run --> no way for the player to start it until we make a Play button
 
+        #high score should never be reset so initialize it in init rather than reset_stats
+        self.high_score = 0
+
     #we need to reset statistcs each time the player starts a new game
     #call reset_stats called anytime the player starts a new game
     def reset_stats(self):
         #intialize statistics that can change during the game
         self.ships_left = self.settings.ship_limit
         self.score = 0 #reset score each time a new game starts
+        self.level = 1

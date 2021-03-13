@@ -146,6 +146,7 @@ class AlienInvasion:
             self.stats.reset_stats() #restarts ship limit at 3, reset game stats
             self.stats.game_active = True #game begins as soon as the code in this function finishes running
             self.sb.prep_score() #after resetting the game stats when starting a new game, this makes scoreboard with a 0 score
+            self.sb.prep_level() #make sure the new level displays correctly
 
             #get rid of any remaining aliens and bullets
             self.aliens.empty()
@@ -298,6 +299,7 @@ class AlienInvasion:
             for aliens in collisions.values():
                 self.stats.score += self.settings.alien_points * len(aliens)
             self.sb.prep_score() #create new image for the updated score
+            self.sb.check_high_score() #call check high score each time an alien is hit after updating the score in check bullet collisions
 
         #new code compares positions of all bullets in self.bullets and all the aliens in self.aliens, and identifies any that overlap
         #whenever the rects of a bullet and alien overlap, groupcollide() adds a key value pair to dictionary it returns
@@ -315,6 +317,10 @@ class AlienInvasion:
             self.bullets.empty()
             self._create_fleet()
             self.settings.increase_speed()
+
+            #increase level
+            self.stats.level += 1
+            self.sb.prep_level()
       
         #if alien group is empty, get rid of any existing bullets by using empty() method which removes all the remaining sprites of the group of bullets
         #also make create_fleet() which fills the screen with aliens again
