@@ -7,6 +7,7 @@ import pygame
 from settings import Settings
 #import settings into main program file
 from game_stats import GameStats
+from scoreboard import Scoreboard
 from button import Button
 from ship import Ship
 #import Ship
@@ -35,6 +36,7 @@ class AlienInvasion:
 
        #Create an instance to store game statistics
        self.stats = GameStats(self)
+       self.sb = Scoreboard(self)
 
        self.ship = Ship(self) #ship class's self info
        #instance of Ship after screen has been created
@@ -357,6 +359,9 @@ class AlienInvasion:
         self.aliens.draw(self.screen)
         #when call draw() on a group, pygame draws each element in the group at the position defined by its rect attribute
         #draw method requires one argument - surface on which to draw the elements from the group
+
+        #draw the score information
+        self.sb.show_score()
 
         #Draw the play button if the game is inactive
         if not self.stats.game_active:
