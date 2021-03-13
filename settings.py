@@ -14,7 +14,8 @@ class Settings:
 
         #ship setings --> making faster. Originally moving 1 pixel per cycle, now 1.5 pixels per cycle
         self.ship_speed = 1.5
-        self.ship_limit  = 3 #the number of ships the player starts out with
+        self.ship_limit  = 2 #the number of ships the player starts out with
+        #assigning 3 made 4 ships
 
         #bullet settings
         self.bullet_speed = 1.5

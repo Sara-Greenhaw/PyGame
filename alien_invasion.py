@@ -53,19 +53,20 @@ class AlienInvasion:
             #while loop runs continually --> contains event loop and code that manages screen updates
             #watch for keyboard and mouse events
             #event is an action that user performs while playing like clicking mouse/pressing key
-
             self._check_events() #to call a method from within a class, use dot notation with the variable self and the name of the method
-            self.ship.update() #calls the ship's update method on each pass through the loop
-            #ship's position will be updated after we've checked for keyboard events and before we update the screen
-            self._update_bullets()
-            #allows ship's position to be updated in response to player input and ensures the updated position will be used when drawing ship to screen
+            #need to know if user presses Q to quit or clicks buttom to close window even if game is inactive
 
-            self._update_aliens() #update position of each alien, after bullets have be updated because checking to see whether any bullets hit any aliens
-            self._update_screen()
-            
-            
+            if self.stats.game_active:
+                self.ship.update() #calls the ship's update method on each pass through the loop
+                #ship's position will be updated after we've checked for keyboard events and before we update the screen
+                self._update_bullets()
+                #allows ship's position to be updated in response to player input and ensures the updated position will be used when drawing ship to screen
+                self._update_aliens() #update position of each alien, after bullets have be updated because checking to see whether any bullets hit any aliens
+                #we don't update these things because don't want game elements to update positions when game is inactive
 
-            
+            self._update_screen() #need to keep updating the screen even when game inactive in roder to make cahnges to screen while waiting to
+            #see if player chooses to start a new game
+
             #print(len(self.bullets)) #shows how many bullets currently exist in the game and verify that they're being deleted when reach top of screen
             #can wathc the terminal output while firing bullets and see that the number of bullets decreases to zero after each series of bullets
             #has cleared the top of the screen
@@ -78,23 +79,24 @@ class AlienInvasion:
 
     def _ship_hit(self):
         #respond to the ship being hit by an alien
-        #decrement ships left
-        self.stats.ships_left -= -1 #each time ship hit, ship is gone so subtract one, tells us when player has run out of ships
-
-        #get rid of any remaining aliens and bullets because alien hit ship (lost a game)
-        self.aliens.empty()
-        self.bullets.empty()
-
-        #create a new fleet and center the ship
-        self._create_fleet()
-        self.ship.center_ship()
-
-        #pause
-        sleep(0.5)
-        #pause after updates have been made to all game elements but before any changes have been drawn to screen
-        #so player can see that the alien has hit the ship
-        #sleep pauses program execution for half a second
-        #when sleep() function ends, code execution moves on to the _update_screen() method, which draws the new fleet to the screen
+        #if ships left of the three allowed are greater than 0
+        if self.stats.ships_left > 0:
+            #decrement ships left
+            self.stats.ships_left -= 1 #each time ship hit, ship is gone so subtract one, tells us when player has run out of ships
+            #get rid of any remaining aliens and bullets because alien hit ship (lost a game)
+            self.aliens.empty()
+            self.bullets.empty()
+            #create a new fleet and center the ship
+            self._create_fleet()
+            self.ship.center_ship()
+            #pause
+            sleep(0.5)
+            #pause after updates have been made to all game elements but before any changes have been drawn to screen
+            #so player can see that the alien has hit the ship
+            #sleep pauses program execution for half a second
+            #when sleep() function ends, code execution moves on to the _update_screen() method, which draws the new fleet to the screen
+        else:
+            self.stats.game_active = False #if player has no ships left, set game_active to False
 
     def _check_events(self):
         for event in pygame.event.get():
@@ -264,7 +266,7 @@ class AlienInvasion:
         #if alien group is empty, get rid of any existing bullets by using empty() method which removes all the remaining sprites of the group of bullets
         #also make create_fleet() which fills the screen with aliens again
 
-    def _check_aliens_bottoms(self):
+    def _check_aliens_bottom(self):
         #check if any aliens ahve reached the bottom of the screen
         screen_rect = self.screen.get_rect()
         for alien in self.aliens.sprites():

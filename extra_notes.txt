@@ -46,3 +46,8 @@ favorite testing for alien invasion is use really wide bullets that remain activ
 
 when an alien hits the ship, we'll need to do a number of tasks: delete all remiaining aliens and bullets, recenter the ship, and create a new fleet
 Writing a print() call is an easy way to ensure we're detecting these conditinons properly
+
+in the main loop of alien_invasion, run_game, we always need to call_check_events(), even if the game is inactive
+we still need to know if the user presses Q to quit the game or clicks the buttom to close the window
+also continue updating the screen so we can make changes to the screen while waiting to see whether the player choose to start a new game
+the rest of the function calls only need to happen when game is active because when game is inactive don't need to update the positions of game elements
