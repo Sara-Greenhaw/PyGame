@@ -145,6 +145,7 @@ class AlienInvasion:
             self.settings.initialize_dynamic_settings()
             self.stats.reset_stats() #restarts ship limit at 3, reset game stats
             self.stats.game_active = True #game begins as soon as the code in this function finishes running
+            self.sb.prep_score() #after resetting the game stats when starting a new game, this makes scoreboard with a 0 score
 
             #get rid of any remaining aliens and bullets
             self.aliens.empty()
@@ -284,8 +285,15 @@ class AlienInvasion:
         #remove any bullets and aliens that have colided
         #check for any bullets that have hit aliens
         #if has hit alien, get rid of the bullet and the alien
+        #group collide returns dictionary, each key a bullet and corresponding value is alien that was hit
         collisions = pygame.sprite.groupcollide(
                 self.bullets, self.aliens, True, True)
+
+        #when bullet hits an alien, pygame returns a collisions dictionary
+        #checks if collisions dictionary exists (), and if it does alien's value is added to the score
+        if collisions:
+            self.stats.score += self.settings.alien_points
+            self.sb.prep_score() #create new image for the updated score
 
         #new code compares positions of all bullets in self.bullets and all the aliens in self.aliens, and identifies any that overlap
         #whenever the rects of a bullet and alien overlap, groupcollide() adds a key value pair to dictionary it returns
