@@ -25,7 +25,7 @@ class Button:
         #turn msg into a rendered image and center text on the buttom
         #msg is the text that needs to be rendered as an image
         #self.font.render() turns text stored in msg into an image, which we then store in the self.msg_image
-        #the font.render() method also takes  aboolean value to turn antialiasing on or off (make edges of text smoother), then font color and background color
+        #the font.render() method also takes  a boolean value to turn antialiasing on or off (make edges of text smoother), then font color and background color
         #we set antialiasing to True and set the text background to same color as the button
         self.msg_image = self.font.render(msg, True, self.text_color,
                 self.button_color)
